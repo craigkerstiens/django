@@ -35,6 +35,11 @@ def find_management_module(app_name):
 
     Raises ImportError if the management module cannot be found for any reason.
     """
+    from django.utils.importlib import import_module
+    module = import_module('%s.%s' % (app_name, 'management'))
+    if hasattr(module, '__path__'):
+        return module.__path__[0]
+    
     parts = app_name.split('.')
     parts.append('management')
     parts.reverse()
